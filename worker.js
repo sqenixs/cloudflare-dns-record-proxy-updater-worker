@@ -25,6 +25,8 @@ function isValidIP(ip) {
 
 export default {
   async fetch(request, env) {
+	let timeoutId = null;
+	 
 	try {  
 		const url = new URL(request.url);
 
@@ -40,14 +42,14 @@ export default {
 		  return new Response('badauth', { status: 401 });
 		}
 
-		let currentIp = undefined;
+		let currentIp = null;
 		if (env.USE_REQUEST_IP) {
 		   currentIp = request.headers.get('cf-connecting-ip');
 		} else {
 		   currentIp = url.searchParams.get('myip');
 		}
 		
-		if (!currentIP || !isValidIP(currentIp)) return new Response('badparam', { status: 400 });
+		if (!currentIp || !isValidIP(currentIp)) return new Response('badparam', { status: 400 });
 		const recordType = currentIp.includes(':') ? 'AAAA' : 'A';
 		
 		const controller = new AbortController();
