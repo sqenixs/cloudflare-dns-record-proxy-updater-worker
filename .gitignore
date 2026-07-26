@@ -1,0 +1,13 @@
+# Block binary keys and tracker index maps from entering GitHub
+*
+!worker.js
+!wrangler.jsonc
+!.gitignore
+!README.md
+!LICENSE
+!package-lock.json
+!package.json
+
+# Block Node dependencies
+node_modules/
+
