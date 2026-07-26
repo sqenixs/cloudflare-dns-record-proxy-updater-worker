@@ -1,26 +1,27 @@
 function isValidIP(ip) {
     if (!ip || typeof ip !== 'string') return false;
 
-    let cleanIp;
+    // Clean up any extra whitespaces or tabs
+    const cleanIp = ip.trim();
 
     try {
-        // 1. Let the native URL engine parse and automatically clean the string
-        const url = new URL(`https://[${ip.trim()}]`);
-        
-        // 2. Extract the pristine hostname, stripping brackets, semicolons, or paths
-        cleanIp = url.hostname.replace(/[\[\]]/g, '');
+        // Handle IPv6 bracket stripping cleanly if present, otherwise keep as is
+        const host = cleanIp.startsWith('[') && cleanIp.endsWith(']') 
+            ? cleanIp.slice(1, -1) 
+            : cleanIp;
 
-        // 3. Ensure it is a valid IP structure and not a standard domain name
-        const validIP = /^[a-f0-9.:]+$/i.test(cleanIp) && !/[g-z]{1,}/i.test(cleanIp);
+        // Ensure it contains a valid IP structure (chars 0-9, periods, and colons only)
+        const validIP = /^[a-f0-9.:]+$/i.test(host) && !/[g-z]{1,}/i.test(host);
         if (!validIP) return false;
-    } catch {
+
+        // Evaluate Private Subnets to protect against local routing addresses
+        const isPrivate = /^(127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|::1|fe80:|f[cd]00:)/i.test(host);
+        return !isPrivate;
+
+    } catch (e){
+		console.error("Error checking for valid ip: ", e);
         return false; 
     }
-
-    // 4. Evaluate Private Subnets using the completely pristine cleanIp string
-    const isPrivate = /^(127\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+|192\.168\.\d+\.\d+|::1|fe80:|f[cd]00:)/i.test(cleanIp);
-    
-    return !isPrivate;
 }
 
 export default {
@@ -79,6 +80,7 @@ export default {
 
     } catch (e) {
 	  clearTimeout(timeoutId);
+	  console.error("Error in worker: ", e);
 	  return new Response('911', { status: 500 });
 	}
   }
