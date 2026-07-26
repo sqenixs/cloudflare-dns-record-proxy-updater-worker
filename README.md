@@ -1,6 +1,6 @@
 # Cloudflare Record update Worker Proxy
 
-A highly secure, lightweight Cloudflare Worker that acts as a secure proxy gateway for record updates. 
+A highly secure, lightweight Cloudflare Worker that acts as a secure proxy gateway for record updates.  
 
 ## What This Project Does
 
