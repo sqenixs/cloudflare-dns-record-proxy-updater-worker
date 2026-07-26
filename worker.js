@@ -65,6 +65,7 @@ export default {
 			  name: env.RECORD_NAME, 
 			  content: currentIp,
 			  ttl: 120,
+			  private_routing: false
 			  proxied: false
 			})
 		  });
