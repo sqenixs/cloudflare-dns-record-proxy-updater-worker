@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cloudflare-dns-record-proxy-updater-worker",
+  "main": "worker.js",
+  "compatibility_date": "2026-04-28",
+  "workers_dev": false,
+  "preview_urls": false,
+  "vars": {
+	"USE_REQUEST_IP": "true"
+  }
+}
