@@ -67,7 +67,7 @@ export default {
 			  type: recordType,
 			  name: env.RECORD_NAME, 
 			  content: currentIp,
-			  ttl: 120,
+			  ttl: 1, //1 is auto
 			  private_routing: false,
 			  proxied: false
 			})
